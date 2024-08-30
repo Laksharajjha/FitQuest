@@ -5,13 +5,13 @@ import './distance_covered.dart';
 import './calories_screen.dart';
 import './blood_oxygen.dart';
 import './sleep_duration.dart';
-import '../Persnoal_Profile/Dasboard.dart'; // Ensure this import path is correct
+import '../Persnoal_Profile/Dasboard.dart';
+import './Heart_rate.dart'; // Correct import
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -19,7 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    // Replace these with the actual widgets or screens for each tab
     HomeContent(),
     Text('Community'), // Placeholder for Sharing screen content
     Text('Achievement'),  // Placeholder for Browse screen content
@@ -156,6 +155,12 @@ class HomeContent extends StatelessWidget {
             title: 'Blood Oxygen',
             subtitle: '95% • Last update 3min',
             navigationScreen: BloodOxygenScreen(), // Navigate to BloodOxygenScreen
+          ),
+          DashboardTile(
+            iconPath: 'assets/vectors/Heart_Rate.svg', 
+            title: 'Heart Rate',
+            subtitle: '96% • Last update 3min',
+            navigationScreen: HeartRateScreen(), // Correct usage
           ),
           const SizedBox(height: 16),
           const Text(
