@@ -9,6 +9,7 @@ require("dotenv").config();
 const authRouter = require("./routes/auth.route.js");
 const noiseRouter = require("./routes/noise.route.js");
 const userRouter = require("./routes/user.route.js");
+const commentRouter = require("./routes/comment.route.js");
 
 // Mongo DB Connections
 mongoose
@@ -27,6 +28,7 @@ app.use(morgan("dev"));
 
 app.use("/v1/api/auth", authRouter);
 app.use("v1/api/user", userRouter);
+app.use("/v1/api/comments", commentRouter);
 app.use("/v1/api/health", noiseRouter);
 
 const PORT = process.env.PORT || 5000;
