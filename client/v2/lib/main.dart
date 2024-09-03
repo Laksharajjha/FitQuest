@@ -3,6 +3,7 @@ import 'package:v2/Components/Landing_Page/Landing_page.dart';
 import 'package:v2/Components/LoginPage/sign_up.dart';
 import 'package:v2/Components/LoginPage/welcome_screen.dart';
 import './Components/home_screen/home_screen.dart';
+import 'Components/Achivements/achieve_ments.dart';
 
 void main() {
   runApp(MyApp());
