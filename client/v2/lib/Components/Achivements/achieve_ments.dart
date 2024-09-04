@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class AchieveMents extends StatelessWidget {
   @override
@@ -36,7 +37,7 @@ class AchieveMents extends StatelessWidget {
               child: Text('Today Report',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ),
-            _buildTodayReportCards(),
+            _buildTodayReportCards(context),
           ],
         ),
       ),
@@ -44,53 +45,65 @@ class AchieveMents extends StatelessWidget {
   }
 
   Widget _buildDateSelectionBar() {
+    final today = DateTime.now();
+    final startOfMonth = DateTime(today.year, today.month, 1);
+    final endOfMonth = DateTime(today.year, today.month + 1, 0);
+
+    List<Widget> dateTiles = [];
+    for (var date = startOfMonth;
+        date.isBefore(endOfMonth.add(Duration(days: 1)));
+        date = date.add(Duration(days: 1))) {
+      bool isSelected = date.day == today.day;
+      dateTiles.add(_buildDateTile(
+          DateFormat.E().format(date), date.day.toString(),
+          isSelected: isSelected));
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       color: Colors.white,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: [
-            _buildDateTile('S', '10'),
-            _buildDateTile('M', '11'),
-            _buildDateTile('T', '12', isSelected: true),
-            _buildDateTile('W', '13'),
-            _buildDateTile('T', '14'),
-            _buildDateTile('F', '15'),
-            _buildDateTile('S', '17'),
-          ],
+          children: dateTiles,
         ),
       ),
     );
   }
 
   Widget _buildDateTile(String day, String date, {bool isSelected = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        children: [
-          Text(day),
-          SizedBox(height: 4),
-          Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: isSelected ? Colors.black : Colors.greenAccent,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              date,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-                fontSize: 16,
+    return GestureDetector(
+      onTap: () {
+        // Handle date tile tap
+        print('Selected date: $day $date');
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          children: [
+            Text(day),
+            SizedBox(height: 4),
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isSelected ? Colors.black : Colors.greenAccent,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                date,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.black,
+                  fontSize: 16,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildTodayReportCards() {
+  Widget _buildTodayReportCards(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -99,7 +112,12 @@ class AchieveMents extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildCard('Active calories', '645 Cal', Colors.grey.shade200),
-              _buildCard('Cycling', '', Colors.black, isMap: true),
+              GestureDetector(
+                onTap: () {
+                  _showCyclingDialog(context);
+                },
+                child: _buildCard('Cycling', '', Colors.black, isMap: true),
+              ),
             ],
           ),
           SizedBox(height: 16),
@@ -132,40 +150,68 @@ class AchieveMents extends StatelessWidget {
     );
   }
 
+  void _showCyclingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Cycling Route'),
+          content: Text(
+              'Here would be a map or more details about the cycling route.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _buildCard(String title, String value, Color color,
       {bool isProgress = false, bool isMap = false}) {
     return Expanded(
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            if (isProgress)
-              CircularProgressIndicator(
-                value: 0.8,
-                backgroundColor: Colors.grey.shade300,
-                color: Colors.purple,
-              )
-            else if (isMap)
-              Container(
-                height: 80,
-                color: Colors.white,
-                child: Center(
-                  child: Icon(Icons.map, size: 50, color: Colors.black),
-                ),
-              )
-            else
-              Text(value,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-          ],
+      child: GestureDetector(
+        onTap: () {
+          // Handle card tap
+          print('Tapped on $title card');
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 8),
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              SizedBox(height: 8),
+              if (isProgress)
+                CircularProgressIndicator(
+                  value: 0.8,
+                  backgroundColor: Colors.grey.shade300,
+                  color: Colors.purple,
+                )
+              else if (isMap)
+                Container(
+                  height: 80,
+                  color: Colors.white,
+                  child: Center(
+                    child: Icon(Icons.map, size: 50, color: Colors.black),
+                  ),
+                )
+              else
+                Text(value,
+                    style:
+                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            ],
+          ),
         ),
       ),
     );
