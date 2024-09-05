@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: AchieveMents(),
+      home: HomeScreen(),
       routes: {
         '/signup': (context) =>
             SignupScreen(), // Define your Homescreen route here
