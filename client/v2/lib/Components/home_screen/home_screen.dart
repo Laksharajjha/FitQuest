@@ -7,6 +7,7 @@ import './blood_oxygen.dart';
 import './sleep_duration.dart';
 import '../Persnoal_Profile/Dasboard.dart';
 import './Heart_rate.dart'; // Correct import
+import '../Achivements/achieve_ments.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,10 +19,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomeContent(),
-    Text('Community'), // Placeholder for Sharing screen content
-    Text('Achievement'),  // Placeholder for Browse screen content
+  static List<Widget> _widgetOptions = <Widget>[
+    const HomeContent(),
+    const Text('Community'), // Placeholder for Sharing screen content
+    AchieveMents(), // Correct reference for Achievement page
   ];
 
   void _onItemTapped(int index) {
@@ -33,42 +34,45 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Dashboard()), // Navigate to Dashboard
-                );
-              },
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                radius: 20,  // Adjusted radius to fit the AppBar better
-                child: SvgPicture.asset(
-                  'assets/vectors/Profile_Pic.svg',
-                  width: 40,  // Adjusted width and height to fit within the CircleAvatar
-                  height: 40,
-                ),
+      appBar: _selectedIndex == 0 // Conditionally render the AppBar
+          ? AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              title: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Dashboard()), // Navigate to Dashboard
+                      );
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 20, // Adjusted radius to fit the AppBar better
+                      child: SvgPicture.asset(
+                        'assets/vectors/Profile_Pic.svg',
+                        width: 40, // Adjusted width and height to fit within the CircleAvatar
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Good Afternoon 🌤️',
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
+                  const Spacer(),
+                  SvgPicture.asset(
+                    'assets/vectors/logo.svg',
+                    width: 40,
+                    height: 40,
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(width: 8),
-            const Text(
-              'Good Afternoon 🌤️',
-              style: TextStyle(color: Colors.black, fontSize: 18),
-            ),
-            const Spacer(),
-            SvgPicture.asset(
-              'assets/vectors/logo.svg', 
-              width: 40,
-              height: 40,
-            ),
-          ],
-        ),
-      ),
+            )
+          : null, // No AppBar for other pages
       body: _widgetOptions.elementAt(_selectedIndex), // Display the selected screen
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -139,25 +143,25 @@ class HomeContent extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           DashboardTile(
-            iconPath: 'assets/vectors/distance.svg', 
+            iconPath: 'assets/vectors/distance.svg',
             title: 'Distance Covered',
             subtitle: '1.9 km • Last update 3min',
             navigationScreen: DistanceCoveredScreen(), // Navigate to DistanceCoveredScreen
           ),
           DashboardTile(
-            iconPath: 'assets/vectors/calories.svg', 
+            iconPath: 'assets/vectors/calories.svg',
             title: 'Calories',
             subtitle: '0/400 kcal • Last update 3d',
             navigationScreen: CaloriesScreen(), // Navigate to CaloriesScreen
           ),
           DashboardTile(
-            iconPath: 'assets/vectors/Blood_Oxygen.svg', 
+            iconPath: 'assets/vectors/Blood_Oxygen.svg',
             title: 'Blood Oxygen',
             subtitle: '95% • Last update 3min',
             navigationScreen: BloodOxygenScreen(), // Navigate to BloodOxygenScreen
           ),
           DashboardTile(
-            iconPath: 'assets/vectors/Heart_Rate.svg', 
+            iconPath: 'assets/vectors/Heart_Rate.svg',
             title: 'Heart Rate',
             subtitle: '96% • Last update 3min',
             navigationScreen: HeartRateScreen(), // Correct usage
@@ -168,7 +172,7 @@ class HomeContent extends StatelessWidget {
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           DashboardTile(
-            iconPath: 'assets/vectors/moon-zzz.svg', 
+            iconPath: 'assets/vectors/moon-zzz.svg',
             title: 'Sleep Duration',
             subtitle: 'No Data • Last update 1min',
             navigationScreen: SleepDurationScreen(), // Navigate to SleepDurationScreen
