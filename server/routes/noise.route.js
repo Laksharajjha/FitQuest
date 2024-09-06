@@ -1,10 +1,16 @@
 const { Router } = require("express");
-const { heart, getData } = require("../controllers/noise.controller.js");
-const { verifyToken } = require("../middlewares/auth.middleware.js");
+const {
+  getUserDataToday,
+  getData,
+} = require("../controllers/noise.controller.js");
+const {
+  verifyToken,
+  TokenParser,
+} = require("../middlewares/auth.middleware.js");
 
 const router = Router();
 
-router.post("/noise", heart);
-router.put("/user-data/:email", getData);
+router.put("/user-data/", verifyToken, TokenParser, getData);
+router.get("/user-data/today", verifyToken, TokenParser, getUserDataToday);
 
 module.exports = router;
