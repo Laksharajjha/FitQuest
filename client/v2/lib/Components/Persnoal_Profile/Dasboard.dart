@@ -9,7 +9,6 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -25,11 +24,7 @@ class Dashboard extends StatelessWidget {
               height: 30,
             ),
             onPressed: () {
-              // Navigate back to HomeScreen
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-              );
+              Navigator.pop(context);
             },
           ),
           actions: [
@@ -52,9 +47,8 @@ class Dashboard extends StatelessWidget {
               backgroundColor: Colors.transparent,
               child: SvgPicture.asset(
                 'assets/vectors/Profile_Pic.svg',
-                width: 500, 
+                width: 500,
                 height: 500,
-                 
               ),
             ),
             const SizedBox(height: 20),
@@ -91,7 +85,7 @@ class Dashboard extends StatelessWidget {
                     leading: SvgPicture.asset(
                       'assets/vectors/Privacy.svg',
                       width: 40,
-                      height: 40, 
+                      height: 40,
                     ),
                     title: Text('Privacy Shortcuts'),
                   ),
@@ -112,5 +106,3 @@ class Dashboard extends StatelessWidget {
     );
   }
 }
-
-
