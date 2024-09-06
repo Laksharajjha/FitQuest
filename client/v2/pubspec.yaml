@@ -16,6 +16,8 @@ dependencies:
   dio:
   flutter_map: ^4.0.0
   latlong2: ^0.8.1
+  shared_preferences:
+  uuid:
 
 dev_dependencies:
   flutter_test:

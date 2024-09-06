@@ -7,12 +7,10 @@ const UserSchema = new mongoose.Schema(
     achievements: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Achievement" },
     ],
-    data: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "SensorData",
-      },
-    ],
+    data: {
+      type: mongoose.Types.ObjectId,
+      ref: "SensorData",
+    },
     ecommerceLink: {
       type: String,
       optional: true,

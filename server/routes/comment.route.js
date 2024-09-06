@@ -10,18 +10,20 @@ router.get("/comments", async (req, res) => {
 
   try {
     const skip = (pageNumber - 1) * pageSize;
+    console.log("1");
     const comments = await Comment.find({ parent_id: null })
       .sort({ created_at: -1 })
       .skip(skip)
       .limit(pageSize);
 
+    console.log("2");
     const totalComments = await Comment.countDocuments({ parent_id: null });
-    const totalReplies = await Comment.countDocuments({ parent_id: parentId });
+    console.log("3");
+    console.log("4");
 
     res.json({
       comments,
       totalComments,
-      totalReplies,
       pagination: {
         page: pageNumber,
         limit: pageSize,
@@ -101,7 +103,7 @@ router.post("/comments/:usrId", async (req, res) => {
   try {
     const comment = new Comment({ userId, parent_id, content });
     await comment.save();
-    res.status(201).json(comment);
+    res.status(200).json(comment);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,10 +1,13 @@
+const { default: mongoose } = require("mongoose");
+
 const SensorDataSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    email: String,
+    step: Number,
     distance: Number,
     calories: Number,
     heartRate: Number,
-    bodyStress: Number,
+    sleep: Number,
   },
   { timestamps: true }
 );

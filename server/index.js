@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 app.use("/v1/api/auth", authRouter);
-app.use("v1/api/user", userRouter);
+app.use("/v1/api/user", userRouter);
 app.use("/v1/api/comments", commentRouter);
 app.use("/v1/api/health", noiseRouter);
 

@@ -23,12 +23,7 @@ exports.auth = async (req, res, next) => {
       const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
         expiresIn: JWT_EXPIRATION,
       });
-
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-      });
-      return res.status(200).json({ message: "Login successful" });
+      return res.status(200).json({ message: "Login successful", token });
     } else if (type === "register") {
       const hashedPassword = await bcrypt.hash(password, 10);
 
