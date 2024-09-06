@@ -1,9 +1,10 @@
+const { default: mongoose } = require("mongoose");
+
 const AchievementSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    user: { type: mongoose.Types.ObjectId, ref: "User" },
     title: String,
     description: String,
-    dateEarned: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
+const SensorData = require("../models/sensor.model");
 const { JWT_SECRET, JWT_EXPIRATION } = process.env;
 
 exports.auth = async (req, res, next) => {
@@ -31,6 +32,16 @@ exports.auth = async (req, res, next) => {
         email,
         password: hashedPassword,
       });
+      const data = new SensorData({
+        calories: 0,
+        distance: 0,
+        email: req.email,
+        heartRate: 0,
+        sleep: 0,
+        step: 0,
+        userId: req.userId,
+      });
+      await data.save();
       await newUser.save();
 
       const token = jwt.sign(
@@ -38,12 +49,9 @@ exports.auth = async (req, res, next) => {
         JWT_SECRET,
         { expiresIn: JWT_EXPIRATION }
       );
-
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-      });
-      return res.status(200).json({ message: "Registration successful" });
+      return res
+        .status(200)
+        .json({ message: "Registration successful", token });
     } else {
       return res.status(400).json({ message: "Invalid type specified" });
     }
@@ -53,6 +61,5 @@ exports.auth = async (req, res, next) => {
 };
 
 exports.logout = (req, res) => {
-  res.clearCookie("token");
   return res.status(200).json({ message: "Logout successful" });
 };
